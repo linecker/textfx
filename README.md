@@ -1,2 +1,2 @@
-# textfx
+# tfx
 Make text files less boring.
