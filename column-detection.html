@@ -1,0 +1,55 @@
+<script>
+// match[0] counts the occurences of whitespaces in colum 0, match[1] the
+// whitespaces in column 1, etc. Only for the first limit columns.
+var match = [];
+var lines;
+var limit = 40;
+
+function initialize_column_detection() {
+        for (i = 0; i < limit; i++) {
+                match[i] = 0;
+        }
+        lines = 0;
+}
+
+function detect_column(line) {
+        for (i = 0; i < line.length && i < limit; i++ ){
+                if (line.charAt(i).trim() == '') {
+                        match[i]++;
+                }
+        }
+        lines++;
+}
+
+function column_pattern() {
+        var pattern = ""
+        for (i = 0; i < limit; i++) {
+                if (match[i] > 0.75 * lines) {
+                        pattern += '*'
+                } else {
+                        pattern += '-'
+                }
+        }
+        return pattern
+}
+
+function test() {
+        initialize_column_detection();
+        console.log(match);
+        detect_column("18123 12838971238 klsdf weifiojnsdf akllqo 31");
+        detect_column("12311 12123123123 laklso ioseif");
+        detect_column("12313 12345235123 kl");
+        detect_column("18859 90108289298 ioiogjklsfkl slfkeljf jflseiii aflfklef");
+        detect_column("81728 88918989189 jsdklfjkjsldf ksfjdlfj sjkldfjlsdjf");
+        detect_column("90190 19023003901 jklskldjf jjjo");
+        detect_column("12232 11090772891 klkasoef jjjo");
+        detect_column("19032 1ß929031023 kls lsjdfoi iose fasofos saoifoisef");
+        detect_column("some false line");
+        detect_column("88271 90102782379 lliw2eifjefjef fjseiofo");
+        console.log(column_pattern());
+        console.log(match);
+        console.log(lines);
+}
+test()
+
+</script>
