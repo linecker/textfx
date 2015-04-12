@@ -1,0 +1,60 @@
+<!--
+        tfx
+
+        Simplistic html demo that displays a box where I can drag'n'drop a text
+        file that is then displayed. Tested with Chrome 41 and loosely based on
+        http://html5demos.com/dnd-upload.
+-->
+
+<html><body>
+
+<style>
+        #holder { border: 2px dashed #ccc; width: 90%; min-height: 200px;
+                margin: 20px auto; padding:30px; font-family: "Courier New";
+                font-size: 13px;}
+        #holder.hover { border: 2px dashed #666; }
+</style>
+
+<div id="holder">
+Drag'n'drop file to see contents...
+</div>
+
+<script>
+function withbr(text) {
+        var result = "";
+        for (var i = 0; i < text.length; i++ ) {
+                if ( text[i] != '\n' ) {
+                        result += text[i];
+                } else {
+                        result += "<br>";
+                }
+        }
+        return result;
+}
+
+function previewfile(file) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+                holder.innerHTML = withbr(reader.result);
+        };
+        reader.readAsText(file);
+}
+
+function readfiles(files) {
+        var formData = new FormData();
+        for (var i = 0; i < files.length; i++) {
+                formData.append('file', files[i]);
+                previewfile(files[i]);
+        }
+}
+
+holder.ondragover = function () { this.className = 'hover'; return false; };
+holder.ondragend = function () { this.className = ''; return false; };
+holder.ondrop = function (e) {
+        this.className = '';
+        e.preventDefault();
+        readfiles(e.dataTransfer.files);
+}
+</script>
+
+</body></html>
